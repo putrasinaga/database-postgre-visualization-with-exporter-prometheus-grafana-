@@ -1,0 +1,55 @@
+version: '3.8' 
+
+services: 
+  postgre:
+    container_name: postgre
+    restart: always
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: asdzxc12
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  
+  adminer:
+    container_name: adminer
+    restart: always 
+    image: adminer
+    ports:
+      - 8088:8080
+  
+  prometheus:
+    container_name: prometheus 
+    restart: always 
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    container_name: grafana
+    restart: always 
+    image: grafana/grafana 
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    
+  postgres-exporter:
+    container_name: postgras-exporter
+    restart: always 
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://admin:asdzxc12@postgre:5432/example?sslmode=disable"
+    depends_on:
+      - postgre
+      - prometheus
+  
+volumes:
+  db-data:
+  grafana-storage:
