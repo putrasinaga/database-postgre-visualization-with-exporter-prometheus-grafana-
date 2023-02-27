@@ -6,7 +6,7 @@ you can install the docker in this link : https://docs.docker.com/get-docker/
 
 2. get pull image : 
   - grafana 
-  - postgre-exportter
+  - postgre-exporter
   - adminer
   - prometheus 
   - postgre 
